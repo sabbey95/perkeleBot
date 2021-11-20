@@ -1,7 +1,13 @@
 from sqlalchemy import String, Column, Integer, Boolean, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 
-from database_utils import get_database_engine
+url = os.environ['DATABASE_URL']
+engine = create_engine(url.replace("postgres://", "postgresql://", 1), echo=False)
+
+
+def get_database_engine():
+    return engine
+
 
 Base = declarative_base()
 
