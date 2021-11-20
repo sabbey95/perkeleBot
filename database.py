@@ -1,5 +1,6 @@
 from sqlalchemy import String, Column, Integer, Boolean, DateTime
 from sqlalchemy.ext.declarative import declarative_base
+import os
 
 url = os.environ['DATABASE_URL']
 engine = create_engine(url.replace("postgres://", "postgresql://", 1), echo=False)
