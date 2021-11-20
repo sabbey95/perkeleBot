@@ -3,7 +3,6 @@ import ssl
 from pathlib import Path
 
 import slack
-from dotenv import load_dotenv
 from flask import Flask
 from slackeventsapi import SlackEventAdapter
 
@@ -17,8 +16,7 @@ from scheduled_tasks.schedule_tasks import schedule_tasks
 ssl_context = ssl.create_default_context()
 ssl_context.check_hostname = False
 ssl_context.verify_mode = ssl.CERT_NONE
-env_path = Path('.') / '.env'
-load_dotenv(dotenv_path=env_path)
+
 initialise_database()
 
 app = Flask(__name__)
