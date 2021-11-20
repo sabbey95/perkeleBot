@@ -3,3 +3,4 @@ slackclient
 SQLAlchemy
 business-duration
 slackeventsapi
+schedule
