@@ -3,17 +3,17 @@ from abc import abstractmethod, ABC
 from flask import request, jsonify
 
 from database import find_channel
-from database_utils import new_database_session
+from database_utils import get_database_session
 
 
 class Request(ABC):
     def __init__(self):
-        self.session = new_database_session()
+        self.session = get_database_session()
         self.data = request.form
 
     def handle(self):
         channel_id = self.get_channel_id()
-        session = new_database_session()
+        session = get_database_session()
         channel = find_channel(session, channel_id)
 
         if channel is None:

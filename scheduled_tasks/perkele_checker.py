@@ -4,12 +4,12 @@ import business_duration
 import holidays
 
 from database import Channel, TurnNotification, PerkeleCount
-from database_utils import new_database_session
+from database_utils import get_database_session
 
 
 class PerkeleChecker:
     def __init__(self, client):
-        self.session = new_database_session()
+        self.session = get_database_session()
         self.client = client
 
     def run(self):

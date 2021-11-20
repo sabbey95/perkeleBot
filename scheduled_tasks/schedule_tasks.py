@@ -3,7 +3,7 @@ import threading
 import schedule
 
 from database import Channel
-from database_utils import new_database_session
+from database_utils import get_database_session
 from requests.board_of_shame_request import send_board_of_shame
 from scheduled_tasks.perkele_checker import PerkeleChecker
 
@@ -21,7 +21,7 @@ def run_scheduled_tasks():
 
 
 def send_leader_board_updates(client):
-    session = new_database_session()
+    session = get_database_session()
     channels = session.query(Channel).all()
     for channel in channels:
         send_board_of_shame(client, channel, session)
