@@ -4,3 +4,4 @@ SQLAlchemy
 business-duration
 slackeventsapi
 schedule
+holidays
