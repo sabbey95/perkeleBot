@@ -6,7 +6,7 @@ import slack
 from flask import Flask
 from slackeventsapi import SlackEventAdapter
 
-from database import initialise_database
+import database as initialise_database
 from requests.board_of_shame_request import BoardOfShameRequest
 from requests.launch_bot_request import LaunchBotRequest
 from requests.message_request import MessageRequest
@@ -17,7 +17,7 @@ ssl_context = ssl.create_default_context()
 ssl_context.check_hostname = False
 ssl_context.verify_mode = ssl.CERT_NONE
 
-initialise_database()
+initialise_database
 
 app = Flask(__name__)
 slack_event_adapter = SlackEventAdapter(os.environ['SIGNING_SECRET'], '/slack/events', app)
