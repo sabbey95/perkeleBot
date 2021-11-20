@@ -44,6 +44,6 @@ def check_last_notification(last_notification, channel):
     end_of_civ_day = datetime.time(18, 0, 0)
     hours_dif = business_duration.businessDuration(last_notification.timestamp, datetime.datetime.now(),
                                                    starttime=start_of_civ_day, endtime=end_of_civ_day,
-                                                   holidaylist=holidays.UnitedKingdom(), unit='hour')
+                                                   holidaylist=holidays.UnitedKingdom(), unit='hour', weekendlist=[])
 
     return hours_dif >= channel.hours_until_perkele
