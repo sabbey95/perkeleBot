@@ -46,10 +46,15 @@ def set_perkele_hours():
 def perkele_board_of_shame():
     return BoardOfShameRequest(client).handle()
 
+
+@app.route('/post-config', methods=['POST'])
+def post_config():
+    return PostConfigRequest(client).handle()
+
+
 @app.route('/health-check', methods=['GET'])
 def health_check():
     return "I'm here", 200
-
 
 
 if __name__ == "__main__":
