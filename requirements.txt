@@ -1,3 +1,5 @@
 Flask==0.11.1
 slackclient==2.9.3
 SQLAlchemy==1.1.5
+BusinessHours=1.2
+slackeventsapi=3.0.0
