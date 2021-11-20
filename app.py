@@ -10,6 +10,7 @@ import database as initialise_database
 from requests.board_of_shame_request import BoardOfShameRequest
 from requests.launch_bot_request import LaunchBotRequest
 from requests.message_request import MessageRequest
+from requests.post_config_request import PostConfigRequest
 from requests.set_perkele_hours_request import SetPerkeleHoursRequest
 from scheduled_tasks.schedule_tasks import schedule_tasks
 
