@@ -8,3 +8,4 @@ holidays
 gunicorn
 psycopg2
 pandas
+python-dotenv

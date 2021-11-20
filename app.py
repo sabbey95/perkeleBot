@@ -1,6 +1,5 @@
 import os
 import ssl
-from pathlib import Path
 
 import slack
 from flask import Flask
@@ -12,7 +11,7 @@ from requests.launch_bot_request import LaunchBotRequest
 from requests.message_request import MessageRequest
 from requests.post_config_request import PostConfigRequest
 from requests.set_perkele_hours_request import SetPerkeleHoursRequest
-from scheduled_tasks.schedule_tasks import schedule_tasks
+from scheduled_tasks.schedule_tasks import schedule_tasks, run_pending_tasks
 
 ssl_context = ssl.create_default_context()
 ssl_context.check_hostname = False
@@ -56,6 +55,12 @@ def post_config():
 @app.route('/health-check', methods=['GET'])
 def health_check():
     return "I'm here", 200
+
+
+@app.route('/run-scheduled-tasks', methods=['POST'])
+def run_scheduled_tasks():
+    run_pending_tasks()
+    return "tasks run", 200
 
 
 if __name__ == "__main__":

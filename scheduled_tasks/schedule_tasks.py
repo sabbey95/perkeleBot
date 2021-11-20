@@ -1,5 +1,3 @@
-import threading
-
 import schedule
 
 from database import Channel
@@ -11,13 +9,11 @@ from scheduled_tasks.perkele_checker import PerkeleChecker
 def schedule_tasks(client):
     schedule.every(60).seconds.do(PerkeleChecker(client).run)
     schedule.every().monday.at("09:00").do(send_leader_board_updates, client)
-    run_scheduled_tasks()
+    run_pending_tasks()
 
 
-def run_scheduled_tasks():
+def run_pending_tasks():
     schedule.run_pending()
-    t = threading.Timer(60, run_scheduled_tasks)
-    t.start()
 
 
 def send_leader_board_updates(client):

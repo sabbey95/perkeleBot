@@ -1,6 +1,5 @@
 from flask import Response
 
-from database import PerkeleCount
 from requests.slash_command_request import SlashCommandRequest
 
 

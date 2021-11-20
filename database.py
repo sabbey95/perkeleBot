@@ -2,7 +2,7 @@ from sqlalchemy import String, Column, Integer, Boolean, DateTime, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 import os
 
-url = os.environ['DATABASE_URL']
+url = os.environ["DATABASE_URL"]
 engine = create_engine(url.replace("postgres://", "postgresql://", 1), echo=False)
 
 
