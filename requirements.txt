@@ -6,3 +6,4 @@ slackeventsapi
 schedule
 holidays
 gunicorn
+psycopg2
