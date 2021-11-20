@@ -4,7 +4,8 @@ import os
 
 
 def get_database_engine():
-    return create_engine(os.environ['DATABASE_URL'], echo=False, )
+    url = os.environ['DATABASE_URL']
+    return create_engine(url.replace("postgres://", "postgresql://", 1), echo=False, )
 
 
 def new_database_session():
