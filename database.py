@@ -31,7 +31,7 @@ class PerkeleCount(Base):
     perkele_count = Column(Integer)
 
 
-Base.metadata.create_all(get_database_engine())
+Base.metadata.create_all(get_database_engine(), checkfirst=True)
 
 
 def find_channel(session, channel_id):
