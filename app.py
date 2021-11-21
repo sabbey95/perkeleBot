@@ -1,5 +1,6 @@
 import os
 
+from dotenv import load_dotenv
 from flask import Flask
 from slackeventsapi import SlackEventAdapter
 
@@ -11,6 +12,8 @@ from requests.post_config_request import PostConfigRequest
 from requests.set_perkele_hours_request import SetPerkeleHoursRequest
 from scheduled_tasks.perkele_checker import PerkeleChecker
 from scheduled_tasks.schedule_tasks import send_leader_board_updates
+
+load_dotenv()
 
 initialise_database
 

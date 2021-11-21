@@ -51,5 +51,4 @@ def check_last_notification(last_notification, channel):
                                                    holidaylist=holidays.UnitedKingdom(), unit='hour',
                                                    weekendlist=weekends)
 
-    print('Channel: %s, hours til perkele: %f, hours: %f' % (channel.id, channel.hours_until_perkele, hours_dif))
     return hours_dif >= channel.hours_until_perkele

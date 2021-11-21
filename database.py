@@ -1,7 +1,9 @@
+from dotenv import load_dotenv
 from sqlalchemy import String, Column, Integer, Boolean, DateTime, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 import os
 
+load_dotenv()
 url = os.environ["DATABASE_URL"]
 engine = create_engine(url.replace("postgres://", "postgresql://", 1), echo=False)
 
