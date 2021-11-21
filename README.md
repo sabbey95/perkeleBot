@@ -22,3 +22,11 @@ DATABASE_URL=sqlite:///database.db?check_same_thread=False
 The SLACK_TOKEN and SIGNING_SECRET can be found slack workspace settings when setting up the bot.
 
 Then just run ```app.py```
+The app will run locally on port 5000, you can use ngrok to set up a temporary url for slack to hit with requests.
+Install ngrok and run
+
+```bash
+path_to_ngrok/ngrok http 5000
+``` 
+
+Use the url this creates on the slack api website when setting up the bot.
