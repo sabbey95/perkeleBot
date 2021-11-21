@@ -49,7 +49,7 @@ def post_config():
 
 
 @app.route('/toggle-perkele-pause', methods=['POST'])
-def post_config():
+def toggle_perkele_pause():
     return TogglePerkelePauseRequest().handle()
 
 
