@@ -4,7 +4,7 @@ import os
 import business_duration
 import holidays
 
-from manual_config import START_OF_CIV_DAY, END_OF_CIV_DAY, INACTIVE_DAYS, INACTIVE_ON_WEEKEND
+from manual_config import START_OF_CIV_DAY, END_OF_CIV_DAY, INACTIVE_ON_WEEKEND
 from network_utils import ssl_context
 from database import Channel, TurnNotification, PerkeleCount
 from database_utils import get_database_session
