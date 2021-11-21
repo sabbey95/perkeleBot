@@ -10,6 +10,7 @@ from requests.launch_bot_request import LaunchBotRequest
 from requests.message_request import MessageRequest
 from requests.post_config_request import PostConfigRequest
 from requests.set_perkele_hours_request import SetPerkeleHoursRequest
+from requests.toggle_perkele_pause import TogglePerkelePauseRequest
 from scheduled_tasks.perkele_checker import PerkeleChecker
 from scheduled_tasks.schedule_tasks import send_leader_board_updates
 
@@ -45,6 +46,10 @@ def perkele_board_of_shame():
 @app.route('/post-config', methods=['POST'])
 def post_config():
     return PostConfigRequest().handle()
+
+@app.route('/toggle-perkele-pause', methods=['POST'])
+def post_config():
+    return TogglePerkelePauseRequest().handle()
 
 
 @app.route('/health-check', methods=['GET'])
