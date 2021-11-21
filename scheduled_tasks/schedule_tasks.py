@@ -10,7 +10,9 @@ from requests.board_of_shame_request import send_board_of_shame
 
 def send_leader_board_updates():
     session = get_database_session()
+    session.begin()
     channels = session.query(Channel).all()
     client = slack.WebClient(os.environ['SLACK_TOKEN'], ssl=ssl_context)
     for channel in channels:
         send_board_of_shame(client, channel, session)
+    session.close()

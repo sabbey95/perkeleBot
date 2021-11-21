@@ -16,10 +16,12 @@ class PerkeleChecker:
         self.client = slack.WebClient(os.environ['SLACK_TOKEN'], ssl=ssl_context)
 
     def run(self):
+        self.session.begin()
         channels = self.session.query(Channel).all()
         for channel in channels:
             self.__run_for_channel(channel)
         self.session.commit()
+        self.session.close()
 
     def __run_for_channel(self, channel):
         last_notification = self.session.query(TurnNotification).filter(

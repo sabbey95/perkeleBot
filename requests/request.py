@@ -16,6 +16,7 @@ class Request(ABC):
         self.client = slack.WebClient(os.environ['SLACK_TOKEN'], ssl=ssl_context)
 
     def handle(self):
+        self.session.begin()
         channel_id = self.get_channel_id()
         session = get_database_session()
         channel = find_channel(session, channel_id)
@@ -25,6 +26,7 @@ class Request(ABC):
         else:
             response = self.handle_channel(channel)
         self.session.commit()
+        self.session.close()
         return response
 
     def handle_no_channel(self, channel_id):
