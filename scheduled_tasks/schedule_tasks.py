@@ -11,13 +11,17 @@ from scheduled_tasks.perkele_checker import PerkeleChecker
 
 
 def schedule_tasks():
-    schedule.every(60).seconds.do(PerkeleChecker().run)
+    schedule.every(60).seconds.do(check_for_perkeles)
     schedule.every().monday.at("09:00").do(send_leader_board_updates)
     run_pending_tasks()
 
 
 def run_pending_tasks():
     schedule.run_pending()
+
+
+def check_for_perkeles():
+    PerkeleChecker().run()
 
 
 def send_leader_board_updates():
