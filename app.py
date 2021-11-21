@@ -1,5 +1,4 @@
 import os
-import ssl
 
 from flask import Flask
 from slackeventsapi import SlackEventAdapter
@@ -11,14 +10,12 @@ from requests.message_request import MessageRequest
 from requests.post_config_request import PostConfigRequest
 from requests.set_perkele_hours_request import SetPerkeleHoursRequest
 from scheduled_tasks.perkele_checker import PerkeleChecker
-from scheduled_tasks.schedule_tasks import schedule_tasks, run_pending_tasks, send_leader_board_updates
+from scheduled_tasks.schedule_tasks import send_leader_board_updates
 
 initialise_database
 
 app = Flask(__name__)
 slack_event_adapter = SlackEventAdapter(os.environ['SIGNING_SECRET'], '/slack/events', app)
-
-schedule_tasks()
 
 
 @slack_event_adapter.on('message')
