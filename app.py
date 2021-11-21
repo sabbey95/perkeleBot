@@ -47,6 +47,7 @@ def perkele_board_of_shame():
 def post_config():
     return PostConfigRequest().handle()
 
+
 @app.route('/toggle-perkele-pause', methods=['POST'])
 def post_config():
     return TogglePerkelePauseRequest().handle()
