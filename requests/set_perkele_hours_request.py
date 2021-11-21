@@ -17,4 +17,4 @@ class SetPerkeleHoursRequest(SlashCommandRequest):
 
         self.session.query(Channel).filter(Channel.id == channel.id).update(
             {"hours_until_perkele": int(stripped_text)})
-        return jsonify({"text": "This channel now recieves Perkeles after " + text + " hours"}), 200
+        return jsonify({"text": "This channel now recieves Perkeles after %s hours" % stripped_text}), 200

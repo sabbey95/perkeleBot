@@ -4,6 +4,7 @@ import os
 import business_duration
 import holidays
 
+from manual_config import START_OF_CIV_DAY, END_OF_CIV_DAY
 from network_utils import ssl_context
 from database import Channel, TurnNotification, PerkeleCount
 from database_utils import get_database_session
@@ -26,7 +27,7 @@ class PerkeleChecker:
         if last_notification is not None and check_last_notification(last_notification, channel):
             user_id = last_notification.user_id
             self.client.chat_postMessage(channel=channel.id,
-                                         text=("<@" + user_id + "> :perkele:"))
+                                         text=("<@%s> :perkele:" % user_id))
             self.__update_perkele_count(user_id, channel.id)
 
     def __update_perkele_count(self, user_id, channel_id):
@@ -42,10 +43,8 @@ class PerkeleChecker:
 
 
 def check_last_notification(last_notification, channel):
-    start_of_civ_day = datetime.time(8, 0, 0)
-    end_of_civ_day = datetime.time(22, 0, 0)
     hours_dif = business_duration.businessDuration(last_notification.timestamp, datetime.datetime.now(),
-                                                   starttime=start_of_civ_day, endtime=end_of_civ_day,
+                                                   starttime=START_OF_CIV_DAY, endtime=END_OF_CIV_DAY,
                                                    holidaylist=holidays.UnitedKingdom(), unit='hour', weekendlist=[])
 
     print('Channel: %s, hours til perkele: %f, hours: %f' % (channel.id, channel.hours_until_perkele, hours_dif))
