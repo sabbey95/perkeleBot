@@ -14,10 +14,10 @@ class MessageRequest(Request):
         return self.event.get('channel')
 
     def handle_channel(self, channel):
-        if channel.paused:
+        text = self.event.get('text')
+        if channel.paused or text.__contains__('Perkele Board of Shame'):
             return
 
-        text = self.event.get('text')
         mentions = re.findall('<@(.*?)>', text)
         if len(mentions) == 1:
             self.replace_current_notification(channel, mentions)
