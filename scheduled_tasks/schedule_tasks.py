@@ -1,27 +1,11 @@
 import os
 
-import schedule
 import slack
 
-from network_utils import ssl_context
 from database import Channel
 from database_utils import get_database_session
+from network_utils import ssl_context
 from requests.board_of_shame_request import send_board_of_shame
-from scheduled_tasks.perkele_checker import PerkeleChecker
-
-
-def schedule_tasks():
-    schedule.every().monday.at("09:00").do(send_leader_board_updates)
-    run_pending_tasks()
-
-
-def run_pending_tasks():
-    schedule.run_pending()
-    check_for_perkeles()
-
-
-def check_for_perkeles():
-    PerkeleChecker().run()
 
 
 def send_leader_board_updates():

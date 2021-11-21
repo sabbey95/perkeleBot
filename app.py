@@ -10,7 +10,8 @@ from requests.launch_bot_request import LaunchBotRequest
 from requests.message_request import MessageRequest
 from requests.post_config_request import PostConfigRequest
 from requests.set_perkele_hours_request import SetPerkeleHoursRequest
-from scheduled_tasks.schedule_tasks import schedule_tasks, run_pending_tasks
+from scheduled_tasks.perkele_checker import PerkeleChecker
+from scheduled_tasks.schedule_tasks import schedule_tasks, run_pending_tasks, send_leader_board_updates
 
 initialise_database
 
@@ -51,9 +52,15 @@ def health_check():
     return "I'm here", 200
 
 
-@app.route('/run-scheduled-tasks', methods=['POST'])
-def run_scheduled_tasks():
-    run_pending_tasks()
+@app.route('/run-perkele-check', methods=['POST'])
+def run_perkele_check():
+    PerkeleChecker().run()
+    return "tasks run", 200
+
+
+@app.route('/post-shame-boards', methods=['POST'])
+def post_shame_boards():
+    send_leader_board_updates()
     return "tasks run", 200
 
 
