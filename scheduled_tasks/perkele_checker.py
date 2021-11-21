@@ -4,7 +4,7 @@ import os
 import business_duration
 import holidays
 
-from manual_config import START_OF_CIV_DAY, END_OF_CIV_DAY
+from manual_config import START_OF_CIV_DAY, END_OF_CIV_DAY, INACTIVE_DAYS, INACTIVE_ON_WEEKEND
 from network_utils import ssl_context
 from database import Channel, TurnNotification, PerkeleCount
 from database_utils import get_database_session
@@ -43,9 +43,11 @@ class PerkeleChecker:
 
 
 def check_last_notification(last_notification, channel):
+    weekends = [5, 6] if INACTIVE_ON_WEEKEND else []
     hours_dif = business_duration.businessDuration(last_notification.timestamp, datetime.datetime.now(),
                                                    starttime=START_OF_CIV_DAY, endtime=END_OF_CIV_DAY,
-                                                   holidaylist=holidays.UnitedKingdom(), unit='hour', weekendlist=[])
+                                                   holidaylist=holidays.UnitedKingdom(), unit='hour',
+                                                   weekendlist=weekends)
 
     print('Channel: %s, hours til perkele: %f, hours: %f' % (channel.id, channel.hours_until_perkele, hours_dif))
     return hours_dif >= channel.hours_until_perkele
