@@ -14,6 +14,11 @@ class BoardOfShameRequest(SlashCommandRequest):
 def send_board_of_shame(client, channel, session):
     perkele_counts = session.query(PerkeleCount).filter(PerkeleCount.channel_id == channel.id).all()
     perkele_counts.sort(key=lambda x: x.perkele_count, reverse=True)
+    board_of_shame = build_board_of_shame(perkele_counts)
+    client.chat_postMessage(channel=channel.id, text=board_of_shame)
+
+
+def build_board_of_shame(perkele_counts):
     heading_1 = "Offender"
     heading_2 = "Offences"
     divider = "----------------------------"
@@ -23,4 +28,4 @@ def send_board_of_shame(client, channel, session):
                           perkele_counts)
     table_section = '\n'.join(middle_sections)
     footer_section = "\n %s ```" % divider
-    client.chat_postMessage(channel=channel.id, text=(heading_section + table_section + footer_section))
+    return heading_section + table_section + footer_section
