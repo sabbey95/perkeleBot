@@ -5,10 +5,6 @@ from requests.slash_command_request import SlashCommandRequest
 
 
 class BoardOfShameRequest(SlashCommandRequest):
-    def __init__(self, client):
-        self.client = client
-        super().__init__()
-
     def handle_channel(self, channel):
         send_board_of_shame(self.client, channel, self.session)
         return Response(), 200

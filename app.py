@@ -1,7 +1,6 @@
 import os
 import ssl
 
-import slack
 from flask import Flask
 from slackeventsapi import SlackEventAdapter
 
@@ -21,9 +20,9 @@ initialise_database
 
 app = Flask(__name__)
 slack_event_adapter = SlackEventAdapter(os.environ['SIGNING_SECRET'], '/slack/events', app)
-client = slack.WebClient(os.environ['SLACK_TOKEN'], ssl=ssl_context)
 
-schedule_tasks(client)
+
+schedule_tasks()
 
 
 @slack_event_adapter.on('message')
@@ -44,12 +43,12 @@ def set_perkele_hours():
 
 @app.route('/perkele-board-of-shame', methods=['POST'])
 def perkele_board_of_shame():
-    return BoardOfShameRequest(client).handle()
+    return BoardOfShameRequest().handle()
 
 
 @app.route('/post-config', methods=['POST'])
 def post_config():
-    return PostConfigRequest(client).handle()
+    return PostConfigRequest().handle()
 
 
 @app.route('/health-check', methods=['GET'])

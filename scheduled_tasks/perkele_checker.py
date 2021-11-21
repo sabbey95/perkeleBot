@@ -1,16 +1,18 @@
 import datetime
-
+import slack
+import os
 import business_duration
 import holidays
 
+from app import ssl_context
 from database import Channel, TurnNotification, PerkeleCount
 from database_utils import get_database_session
 
 
 class PerkeleChecker:
-    def __init__(self, client):
+    def __init__(self):
         self.session = get_database_session()
-        self.client = client
+        self.client = slack.WebClient(os.environ['SLACK_TOKEN'], ssl=ssl_context)
 
     def run(self):
         channels = self.session.query(Channel).all()
