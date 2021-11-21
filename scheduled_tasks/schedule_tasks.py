@@ -3,7 +3,7 @@ import os
 import schedule
 import slack
 
-from app import ssl_context
+from network_utils import ssl_context
 from database import Channel
 from database_utils import get_database_session
 from requests.board_of_shame_request import send_board_of_shame

@@ -4,7 +4,7 @@ from abc import abstractmethod, ABC
 import slack
 from flask import request, jsonify
 
-from app import ssl_context
+from network_utils import ssl_context
 from database import find_channel
 from database_utils import get_database_session
 

@@ -4,7 +4,7 @@ import os
 import business_duration
 import holidays
 
-from app import ssl_context
+from network_utils import ssl_context
 from database import Channel, TurnNotification, PerkeleCount
 from database_utils import get_database_session
 
