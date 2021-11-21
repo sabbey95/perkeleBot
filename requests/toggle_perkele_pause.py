@@ -1,7 +1,6 @@
-from flask import Response, jsonify
+from flask import jsonify
 
 from database import Channel
-from manual_config import START_OF_CIV_DAY, END_OF_CIV_DAY, INACTIVE_ON_WEEKEND
 from requests.slash_command_request import SlashCommandRequest
 
 
