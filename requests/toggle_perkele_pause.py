@@ -9,5 +9,5 @@ class TogglePerkelePauseRequest(SlashCommandRequest):
     def handle_channel(self, channel):
         self.session.query(Channel).filter(Channel.id == channel.id).update(
             {"paused": not channel.paused})
-        text = "unpaused" if channel.paused else "paused"
-        return jsonify({"text": "This channel is now %s for Perkeles" % text}), 200
+        pause_info = "unpaused" if channel.paused else "paused"
+        return jsonify({"text": "This channel is now %s for Perkeles" % pause_info}), 200

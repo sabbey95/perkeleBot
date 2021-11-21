@@ -12,12 +12,14 @@ class PostConfigRequest(SlashCommandRequest):
 
 
 def build_config(channel):
+    pause_info = "paused" if channel.paused else "unpaused"
     start_time = START_OF_CIV_DAY.strftime("%H:%M")
     end_time = END_OF_CIV_DAY.strftime("%H:%M")
     day_info = "excluding weekends" if INACTIVE_ON_WEEKEND else ""
     config_string = "Perkeles are enabled in this channel:\n" \
+                    "Perkeles are currently %s\n" \
                     "They will come after %i hours.\n" \
                     "Expected civ hours are from %s - %s %s" % (
-                        channel.hours_until_perkele, start_time,
+                        pause_info, channel.hours_until_perkele, start_time,
                         end_time, day_info)
     return config_string
