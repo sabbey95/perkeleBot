@@ -5,4 +5,4 @@ SHAME_BOARD_TITLE = 'Perkele Board of Shame'
 START_OF_CIV_DAY = datetime.time(8, 0, 0)
 END_OF_CIV_DAY = datetime.time(22, 0, 0)
 
-INACTIVE_ON_WEEKEND = False
+INACTIVE_ON_WEEKEND = True
