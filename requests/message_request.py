@@ -2,6 +2,7 @@ import datetime
 import re
 
 from database import TurnNotification
+from manual_config import SHAME_BOARD_TITLE
 from requests.request import Request
 
 
@@ -15,7 +16,7 @@ class MessageRequest(Request):
 
     def handle_channel(self, channel):
         text = self.event.get('text')
-        if channel.paused or text.__contains__('Perkele Board of Shame'):
+        if channel.paused or text.__contains__(SHAME_BOARD_TITLE):
             return
 
         mentions = re.findall('<@(.*?)>', text)
