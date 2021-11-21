@@ -19,7 +19,7 @@ def send_board_of_shame(client, channel, session):
     divider = "----------------------------"
     heading_section = "``` %s \n %s \n %s       %s \n ========================= \n" % (
         SHAME_BOARD_TITLE, divider, heading_1, heading_2)
-    middle_sections = map(lambda x: " <@%s>   %f    " % (x.user_id, x.perkele_count),
+    middle_sections = map(lambda x: " <@%s>     %i    " % (x.user_id, x.perkele_count),
                           perkele_counts)
     table_section = '\n'.join(middle_sections)
     footer_section = "\n %s ```" % divider
