@@ -1,28 +1,19 @@
 import datetime
-import slack
-import os
+
 import business_duration
 import holidays
 
-from manual_config import START_OF_CIV_DAY, END_OF_CIV_DAY, INACTIVE_ON_WEEKEND
-from network_utils import ssl_context
 from database import Channel, TurnNotification, PerkeleCount
-from database_utils import get_database_session
+from manual_config import START_OF_CIV_DAY, END_OF_CIV_DAY, INACTIVE_ON_WEEKEND
+from requests.request import Request
 
 
-class PerkeleChecker:
-    def __init__(self):
-        self.session = get_database_session()
-        self.client = slack.WebClient(os.environ['SLACK_TOKEN'], ssl=ssl_context)
-
-    def run(self):
-        self.session.begin()
+class CheckPerkelesRequest(Request):
+    def handle_session(self, ):
         channels = self.session.query(Channel).all()
         for channel in channels:
             if not channel.paused:
                 self.__run_for_channel(channel)
-        self.session.commit()
-        self.session.close()
 
     def __run_for_channel(self, channel):
         last_notification = self.session.query(TurnNotification).filter(

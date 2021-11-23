@@ -1,10 +1,11 @@
 from abc import ABC
+
 from flask import request
 
-from requests.request import Request
+from requests.channel_request import ChannelRequest
 
 
-class SlashCommandRequest(Request, ABC):
+class SlashCommandRequest(ChannelRequest, ABC):
     def __init__(self):
         self.data = request.form
         super().__init__()

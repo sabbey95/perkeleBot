@@ -6,12 +6,13 @@ from slackeventsapi import SlackEventAdapter
 
 import database as initialise_database
 from requests.board_of_shame_request import BoardOfShameRequest
+from requests.check_perkeles_request import CheckPerkelesRequest
 from requests.launch_bot_request import LaunchBotRequest
 from requests.message_request import MessageRequest
 from requests.post_config_request import PostConfigRequest
+from requests.send_all_shame_boards_request import SendAllShameBoardsRequest
 from requests.set_perkele_hours_request import SetPerkeleHoursRequest
 from requests.toggle_perkele_pause import TogglePerkelePauseRequest
-from scheduled_tasks.perkele_checker import PerkeleChecker
 from scheduled_tasks.schedule_tasks import send_leader_board_updates
 
 load_dotenv()
@@ -60,13 +61,13 @@ def health_check():
 
 @app.route('/run-perkele-check', methods=['POST'])
 def run_perkele_check():
-    PerkeleChecker().run()
+    CheckPerkelesRequest().handle()
     return "tasks run", 200
 
 
 @app.route('/post-shame-boards', methods=['POST'])
 def post_shame_boards():
-    send_leader_board_updates()
+    SendAllShameBoardsRequest().handle()
     return "tasks run", 200
 
 

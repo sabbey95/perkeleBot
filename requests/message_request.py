@@ -3,10 +3,10 @@ import re
 
 from database import TurnNotification
 from manual_config import SHAME_BOARD_TITLE
-from requests.request import Request
+from requests.channel_request import ChannelRequest
 
 
-class MessageRequest(Request):
+class MessageRequest(ChannelRequest):
     def __init__(self, event):
         self.event = event
         super().__init__()
