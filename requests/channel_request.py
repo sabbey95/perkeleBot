@@ -1,10 +1,7 @@
-import os
-from abc import abstractmethod, ABC
+from abc import abstractmethod
 
-import slack
-from flask import request, jsonify
+from flask import jsonify
 
-from network_utils import ssl_context
 from database import find_channel
 from database_utils import get_database_session
 from requests.request import Request

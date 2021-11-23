@@ -2,11 +2,10 @@ import os
 from abc import abstractmethod, ABC
 
 import slack
-from flask import request, jsonify
+from flask import request
 
-from network_utils import ssl_context
-from database import find_channel
 from database_utils import get_database_session
+from network_utils import ssl_context
 
 
 class Request(ABC):
@@ -17,9 +16,11 @@ class Request(ABC):
 
     def handle(self):
         self.session.begin()
-        response = self.handle_session()
-        self.session.commit()
-        self.session.close()
+        try:
+            response = self.handle_session()
+            self.session.commit()
+        finally:
+            self.session.close()
         return response
 
     @abstractmethod
