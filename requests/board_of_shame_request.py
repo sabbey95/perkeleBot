@@ -7,16 +7,15 @@ from requests.slash_command_request import SlashCommandRequest
 
 class BoardOfShameRequest(SlashCommandRequest):
     def handle_channel(self, channel):
-        send_board_of_shame(self.client, channel, self.session)
+        send_board_of_shame(self.client, channel.id, self.session)
         return Response(), 200
 
 
-def send_board_of_shame(client, channel, session):
-    perkele_counts = session.query(PerkeleCount).filter(PerkeleCount.channel_id == channel.id).all()
+def send_board_of_shame(client, channel_id, session):
+    perkele_counts = session.query(PerkeleCount).filter(PerkeleCount.channel_id == channel_id).all()
     perkele_counts.sort(key=lambda x: x.perkele_count, reverse=True)
     board_of_shame = build_board_of_shame(perkele_counts)
-    print(channel.id)
-    client.chat_postMessage(channel=channel.id, text=board_of_shame)
+    client.chat_postMessage(channel=channel_id, text=board_of_shame)
 
 
 def build_board_of_shame(perkele_counts):
