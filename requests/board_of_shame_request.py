@@ -15,6 +15,7 @@ def send_board_of_shame(client, channel, session):
     perkele_counts = session.query(PerkeleCount).filter(PerkeleCount.channel_id == channel.id).all()
     perkele_counts.sort(key=lambda x: x.perkele_count, reverse=True)
     board_of_shame = build_board_of_shame(perkele_counts)
+    print(channel.id)
     client.chat_postMessage(channel=channel.id, text=board_of_shame)
 
 

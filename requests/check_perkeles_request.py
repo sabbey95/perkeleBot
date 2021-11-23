@@ -9,7 +9,7 @@ from requests.request import Request
 
 
 class CheckPerkelesRequest(Request):
-    def handle_session(self, ):
+    def handle_session(self):
         channels = self.session.query(Channel).all()
         for channel in channels:
             if not channel.paused:
