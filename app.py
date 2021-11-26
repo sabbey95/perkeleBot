@@ -58,13 +58,13 @@ def health_check():
     return "I'm here", 200
 
 
-@app.route('/run-perkele-check', methods=['POST'])
+@app.route('/run-perkele-check', methods=['POST', 'GET'])
 def run_perkele_check():
     CheckPerkelesRequest().handle()
     return "tasks run", 200
 
 
-@app.route('/post-shame-boards', methods=['POST'])
+@app.route('/post-shame-boards', methods=['POST', 'GET'])
 def post_shame_boards():
     SendAllShameBoardsRequest().handle()
     return "tasks run", 200
