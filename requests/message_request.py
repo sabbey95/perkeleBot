@@ -16,7 +16,7 @@ class MessageRequest(ChannelRequest):
 
     def handle_channel(self, channel):
         text = self.event.get('text')
-        if channel.paused or text.__contains__(SHAME_BOARD_TITLE):
+        if channel.paused or text is None or text.__contains__(SHAME_BOARD_TITLE):
             return
 
         mentions = re.findall('<@(.*?)>', text)
