@@ -77,10 +77,14 @@ def post_shame_boards():
     ReplaceChris().handle()
     return "tasks run", 200
 
+
 class ReplaceChris(Request):
     def handle_session(self):
         users_list = self.client.users_list().get("members")
         chris = next((x for x in users_list if x.get('name').__includes__('hris')), None)
+        self.session.query(initialise_database.TurnNotification).filter(
+            initialise_database.TurnNotification.channel_id == 'C02HDGQ71NV').update(
+            {'user_id': chris.get('id')})
         return jsonify(chris), 200
 
 
