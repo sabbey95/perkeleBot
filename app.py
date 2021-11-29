@@ -5,7 +5,6 @@ from flask import Flask, jsonify
 from slackeventsapi import SlackEventAdapter
 
 import database as initialise_database
-from database_utils import get_database_session
 from requests.board_of_shame_request import BoardOfShameRequest
 from requests.check_perkeles_request import CheckPerkelesRequest
 from requests.launch_bot_request import LaunchBotRequest
@@ -73,9 +72,8 @@ def post_shame_boards():
 
 
 @app.route('/replace-chris', methods=['POST', 'GET'])
-def post_shame_boards():
-    ReplaceChris().handle()
-    return "tasks run", 200
+def replace_chris():
+    return ReplaceChris().handle()
 
 
 class ReplaceChris(Request):
