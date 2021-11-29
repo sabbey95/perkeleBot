@@ -35,7 +35,6 @@ def build_board_of_shame(perkele_counts, users_list):
 def build_shame_row(perkele_count, users_list):
     user_id = perkele_count.user_id
     user_info = next((x for x in users_list if x.get('id') == user_id), None)
-    print(users_list)
     if user_info is not None:
         user_name = user_info.get('real_name')
     else:
