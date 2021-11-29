@@ -79,7 +79,7 @@ def replace_chris():
 class ReplaceChris(Request):
     def handle_session(self):
         users_list = self.client.users_list().get("members")
-        people = list(map(lambda x: x.get('real_name', default='None') + ' - ' + x.get('name'), users_list))
+        people = list(map(lambda x: x.get('real_name', 'None') + ' - ' + x.get('name'), users_list))
         return jsonify(people), 200
 
 
