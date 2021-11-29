@@ -36,7 +36,7 @@ def build_shame_row(perkele_count, users_list):
     user_id = perkele_count.user_id
     user_info = next((x for x in users_list if x.get('id') == user_id), None)
     if user_info is not None:
-        user_name = user_info.get('real_name')
+        user_name = user_info.get('real_name') or user_info.get('name')
     else:
         user_name = "<@%s>" % user_id
     return "%s     %i    " % (user_name, perkele_count.perkele_count)

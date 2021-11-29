@@ -1,7 +1,7 @@
 import os
 
 from dotenv import load_dotenv
-from flask import Flask, jsonify
+from flask import Flask
 from slackeventsapi import SlackEventAdapter
 
 import database as initialise_database
@@ -10,7 +10,6 @@ from requests.check_perkeles_request import CheckPerkelesRequest
 from requests.launch_bot_request import LaunchBotRequest
 from requests.message_request import MessageRequest
 from requests.post_config_request import PostConfigRequest
-from requests.request import Request
 from requests.send_all_shame_boards_request import SendAllShameBoardsRequest
 from requests.set_perkele_hours_request import SetPerkeleHoursRequest
 from requests.toggle_perkele_pause import TogglePerkelePauseRequest
@@ -69,19 +68,6 @@ def run_perkele_check():
 def post_shame_boards():
     SendAllShameBoardsRequest().handle()
     return "tasks run", 200
-
-
-@app.route('/replace-chris', methods=['POST', 'GET'])
-def replace_chris():
-    return ReplaceChris().handle()
-
-
-class ReplaceChris(Request):
-    def handle_session(self):
-        users_list = self.client.users_list().get("members")
-        people = list(map(lambda x: x.get('real_name') or x.get('name'), users_list))
-        return jsonify(people), 200
-
 
 if __name__ == "__main__":
     app.run(debug=False)
