@@ -38,7 +38,7 @@ class CheckPerkelesRequest(Request):
 
 def deserves_perkele(last_notification, channel):
     weekends = [5, 6] if INACTIVE_ON_WEEKEND else []
-    bank_holidays = BankHolidays().get_holidays()
+    bank_holidays = BankHolidays(use_cached_holidays=True).get_holidays()
     mins_dif = business_duration.businessDuration(last_notification.timestamp, datetime.datetime.now(),
                                                    starttime=START_OF_CIV_DAY, endtime=END_OF_CIV_DAY,
                                                    holidaylist=bank_holidays, unit='min',

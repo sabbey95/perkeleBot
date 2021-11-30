@@ -22,6 +22,7 @@ class Request(ABC):
             self.session.commit()
         except Exception as e:
             logging.error(e)
+            response = 'Request failed', 500
         finally:
             self.session.close()
         return response
