@@ -38,9 +38,9 @@ class CheckPerkelesRequest(Request):
 
 def deserves_perkele(last_notification, channel):
     weekends = [5, 6] if INACTIVE_ON_WEEKEND else []
-    hours_dif = business_duration.businessDuration(last_notification.timestamp, datetime.datetime.now(),
+    mins_dif = business_duration.businessDuration(last_notification.timestamp, datetime.datetime.now(),
                                                    starttime=START_OF_CIV_DAY, endtime=END_OF_CIV_DAY,
-                                                   holidaylist=holidays.UnitedKingdom(), unit='hour',
+                                                   holidaylist=holidays.UnitedKingdom(), unit='min',
                                                    weekendlist=weekends)
 
-    return hours_dif >= channel.hours_until_perkele
+    return mins_dif >= (channel.hours_until_perkele * 60)
