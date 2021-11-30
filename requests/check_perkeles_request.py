@@ -1,12 +1,11 @@
 import datetime
-import logging
 
 import business_duration
-import holidays
+from govuk_bank_holidays.bank_holidays import BankHolidays
+from requests.request import Request
 
 from database import Channel, TurnNotification, PerkeleCount
 from manual_config import START_OF_CIV_DAY, END_OF_CIV_DAY, INACTIVE_ON_WEEKEND
-from requests.request import Request
 
 
 class CheckPerkelesRequest(Request):
@@ -39,10 +38,10 @@ class CheckPerkelesRequest(Request):
 
 def deserves_perkele(last_notification, channel):
     weekends = [5, 6] if INACTIVE_ON_WEEKEND else []
+    bank_holidays = BankHolidays().get_holidays()
     mins_dif = business_duration.businessDuration(last_notification.timestamp, datetime.datetime.now(),
                                                    starttime=START_OF_CIV_DAY, endtime=END_OF_CIV_DAY,
-                                                   holidaylist=holidays.UnitedKingdom(), unit='min',
+                                                   holidaylist=bank_holidays, unit='min',
                                                    weekendlist=weekends)
 
-    logging.info('Difference in mins: %i' % mins_dif)
     return mins_dif >= (channel.hours_until_perkele * 60)
