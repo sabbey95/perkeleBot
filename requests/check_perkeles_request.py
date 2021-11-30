@@ -1,4 +1,5 @@
 import datetime
+import logging
 
 import business_duration
 import holidays
@@ -43,4 +44,5 @@ def deserves_perkele(last_notification, channel):
                                                    holidaylist=holidays.UnitedKingdom(), unit='min',
                                                    weekendlist=weekends)
 
+    logging.info('Difference in mins: %i' % mins_dif)
     return mins_dif >= (channel.hours_until_perkele * 60)
