@@ -1,3 +1,4 @@
+import logging
 import os
 from abc import abstractmethod, ABC
 
@@ -19,6 +20,8 @@ class Request(ABC):
         try:
             response = self.handle_session()
             self.session.commit()
+        except Exception as e:
+            logging.error(e)
         finally:
             self.session.close()
         return response
