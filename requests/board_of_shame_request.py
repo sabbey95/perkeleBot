@@ -27,8 +27,7 @@ def build_board_of_shame(perkele_counts, users_list):
     heading_2 = "Offences"
 
     column_1_width = get_row_width(heading_1, perkele_counts, users_list)
-    column_2_width = len(heading_2) + COLUMN_START_PADDING + COLUMN_END_PADDING
-    header_row = "%s%s" % (pad(heading_1, column_1_width), pad(heading_2, column_2_width))
+    header_row = "%s%s%s" % (pad(heading_1, column_1_width), heading_2, ' ' * COLUMN_END_PADDING)
     full_column_width = len(header_row)
     divider = "-" * full_column_width
     bold_divider = "=" * full_column_width
