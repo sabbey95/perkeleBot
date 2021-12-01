@@ -34,17 +34,17 @@ def build_board_of_shame(perkele_counts, users_list):
     bold_divider = "=" * full_column_width
     heading_section = "```%s\n%s\n%s\n%s\n" % (
         pad(SHAME_BOARD_TITLE, full_column_width), divider, header_row, bold_divider)
-    middle_sections = map(lambda x: build_shame_row(x, users_list, column_1_width, column_2_width),
+    middle_sections = map(lambda x: build_shame_row(x, users_list, column_1_width),
                           perkele_counts)
     table_section = '\n'.join(middle_sections)
     footer_section = "\n%s```" % divider
     return heading_section + table_section + footer_section
 
 
-def build_shame_row(perkele_count, users_list, column_1_width, column_2_width):
+def build_shame_row(perkele_count, users_list, column_1_width):
     user_id = perkele_count.user_id
     user_name = get_user_name(user_id, users_list)
-    return "%s%s" % (pad(user_name, column_1_width), pad(str(perkele_count.perkele_count), column_2_width))
+    return "%s%i" % (pad(user_name, column_1_width), perkele_count.perkele_count)
 
 
 def get_user_name(user_id, users_list):
@@ -57,8 +57,7 @@ def get_user_name(user_id, users_list):
 
 
 def get_row_width(heading, perkele_counts, users_list):
-    shameful_user_names = list(map(lambda x: get_user_name(x.id, users_list), perkele_counts))
-    print(shameful_user_names)
+    shameful_user_names = list(map(lambda x: get_user_name(x.user_id, users_list), perkele_counts))
     shameful_user_names.append(heading)
     return len(max(shameful_user_names, key=len)) + COLUMN_END_PADDING + COLUMN_START_PADDING
 
