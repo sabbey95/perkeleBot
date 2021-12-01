@@ -59,9 +59,9 @@ def get_user_name(user_id, users_list):
 def get_row_width(heading, perkele_counts, users_list):
     shameful_user_names = list(map(lambda x: get_user_name(x.id, users_list), perkele_counts))
     shameful_user_names.append(heading)
-    return max(shameful_user_names, key=len) + COLUMN_END_PADDING + COLUMN_START_PADDING
+    return len(max(shameful_user_names, key=len)) + COLUMN_END_PADDING + COLUMN_START_PADDING
 
 
 def pad(string, length):
     spaces_at_end = length - COLUMN_START_PADDING - len(string)
-    return '%s%s%s' % ('' * COLUMN_START_PADDING, string, ' ' * spaces_at_end)
+    return '%s%s%s' % (' ' * COLUMN_START_PADDING, string, ' ' * spaces_at_end)
