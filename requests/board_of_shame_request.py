@@ -34,7 +34,7 @@ def build_board_of_shame(perkele_counts, users_list):
     bold_divider = "=" * full_column_width
     heading_section = "```%s\n%s\n%s\n%s\n" % (
         pad(SHAME_BOARD_TITLE, full_column_width), divider, header_row, bold_divider)
-    middle_sections = map(lambda x: build_shame_row(x, users_list),
+    middle_sections = map(lambda x: build_shame_row(x, users_list, column_1_width, column_2_width),
                           perkele_counts)
     table_section = '\n'.join(middle_sections)
     footer_section = "\n%s```" % divider
