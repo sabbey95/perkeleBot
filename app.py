@@ -1,11 +1,14 @@
 import os
 
+from passlib.hash import sha256_crypt
 from dotenv import load_dotenv
 from flask import Flask
 from slackeventsapi import SlackEventAdapter
 
 import database as initialise_database
 from flask import request
+
+from auth import ENCRYPTED_MASTER_PASSWORD
 from requests.board_of_shame_request import BoardOfShameRequest
 from requests.check_perkeles_request import CheckPerkelesRequest
 from requests.launch_bot_request import LaunchBotRequest
@@ -73,6 +76,9 @@ def post_shame_boards():
 
 @app.route('/replace-turn-notification', methods=['POST', 'GET'])
 def replace_turn_notification():
+    password = request.args.get('password')
+    if not sha256_crypt.verify(password, ENCRYPTED_MASTER_PASSWORD):
+        return "Who do you think you are?", 200
     name = request.args.get('name')
     return ReplaceTurnNotification(name).handle()
 
