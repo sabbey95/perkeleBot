@@ -1,3 +1,5 @@
+import datetime
+
 from flask import jsonify
 
 from database import TurnNotification
@@ -15,6 +17,6 @@ class ReplaceTurnNotification(Request):
         if person is not None:
             self.session.query(TurnNotification).filter(
                 TurnNotification.channel_id == 'C02HDGQ71NV').update(
-                {'user_id': person.get('id')})
+                {'user_id': person.get('id'), 'timestamp': datetime.datetime.now()})
             return jsonify(person), 200
         return jsonify("Person: %s not found" % self.name), 200
