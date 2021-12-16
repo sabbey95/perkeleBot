@@ -11,8 +11,8 @@ class ReplaceTurnNotification(Request):
 
     def handle_session(self):
         users_list = self.client.users_list().get("members")
-        person = next((x for x in users_list if x.get('name').lower().__includes__(self.name.lower())), None)
-        if person != None:
+        person = next((x for x in users_list if x.get('name').__includes__(self.name)), None)
+        if person is not None:
             self.session.query(TurnNotification).filter(
                 TurnNotification.channel_id == 'C02HDGQ71NV').update(
                 {'user_id': person.get('id')})
