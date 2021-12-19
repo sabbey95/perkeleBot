@@ -7,4 +7,5 @@ class SendAllShameBoardsRequest(Request):
     def handle_session(self):
         channels = self.session.query(Channel).all()
         for channel in channels:
-            send_board_of_shame(self.client, channel.id, self.session)
+            if not channel.paused:
+                send_board_of_shame(self.client, channel.id, self.session)

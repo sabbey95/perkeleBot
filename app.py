@@ -74,6 +74,7 @@ def post_shame_boards():
     SendAllShameBoardsRequest().handle()
     return "tasks run", 200
 
+
 @app.route('/replace-turn-notification', methods=['POST', 'GET'])
 def replace_turn_notification():
     password = request.args.get('password')
@@ -81,7 +82,6 @@ def replace_turn_notification():
         return "Who do you think you are?", 200
     name = request.args.get('name')
     return ReplaceTurnNotification(name).handle()
-
 
 
 if __name__ == "__main__":
