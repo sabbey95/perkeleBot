@@ -40,6 +40,12 @@ class PerkeleCount(Base):
     perkele_count = Column(Integer)
 
 
+class Profanity(Base):
+    __tablename__ = 'profanities'
+
+    profanity = Column(String, primary_key=True)
+
+
 Base.metadata.create_all(get_database_engine(), checkfirst=True)
 
 

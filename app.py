@@ -2,13 +2,14 @@ import os
 
 from passlib.hash import sha256_crypt
 from dotenv import load_dotenv
-from flask import Flask
+from flask import Flask, render_template
 from slackeventsapi import SlackEventAdapter
 
 import database as initialise_database
 from flask import request
 
 from auth import ENCRYPTED_MASTER_PASSWORD
+from requests.add_profanity_request import AddProfanityRequest
 from requests.board_of_shame_request import BoardOfShameRequest
 from requests.check_perkeles_request import CheckPerkelesRequest
 from requests.launch_bot_request import LaunchBotRequest
@@ -82,6 +83,15 @@ def replace_turn_notification():
         return "Who do you think you are?", 200
     name = request.args.get('name')
     return ReplaceTurnNotification(name).handle()
+
+
+@app.route('/add-profanity', methods=['POST'])
+def add_profanity():
+    return AddProfanityRequest().handle()
+
+@app.route('/', methods=['GET'])
+def home_page():
+    return render_template("home.html")
 
 
 if __name__ == "__main__":

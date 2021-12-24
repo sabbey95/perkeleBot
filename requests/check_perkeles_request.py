@@ -1,12 +1,12 @@
 import datetime
+import random
 
 import business_duration
 from govuk_bank_holidays.bank_holidays import BankHolidays
 from requests.request import Request
 
-from database import Channel, TurnNotification, PerkeleCount
+from database import Channel, TurnNotification, PerkeleCount, Profanity
 from manual_config import START_OF_CIV_DAY, END_OF_CIV_DAY, INACTIVE_ON_WEEKEND
-
 
 class CheckPerkelesRequest(Request):
     def handle_session(self):
@@ -19,9 +19,10 @@ class CheckPerkelesRequest(Request):
         last_notification = self.session.query(TurnNotification).filter(
             TurnNotification.channel_id == channel.id).first()
         if last_notification is not None and deserves_perkele(last_notification, channel):
+            profanity = get_profanity(self.session)
             user_id = last_notification.user_id
             self.client.chat_postMessage(channel=channel.id,
-                                         text=("<@%s> :perkele:" % user_id))
+                                         text=("<@%s> :perkele: %s" % (user_id, profanity)))
             self.__update_perkele_count(user_id, channel.id)
 
     def __update_perkele_count(self, user_id, channel_id):
@@ -45,3 +46,13 @@ def deserves_perkele(last_notification, channel):
                                                    weekendlist=weekends)
 
     return mins_dif >= (channel.hours_until_perkele * 60)
+
+
+def get_profanity(session):
+    profanities = list(map(lambda x: x.profanity, session.query(Profanity).all()))
+    random_limit = max(len(profanities), 20)
+    index = random.randint(0, random_limit-1)
+    if index >= len(profanities):
+        return ""
+    return profanities[index]
+
