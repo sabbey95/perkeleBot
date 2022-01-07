@@ -22,7 +22,7 @@ class CheckPerkelesRequest(Request):
             profanity = get_profanity(self.session)
             user_id = last_notification.user_id
             self.client.chat_postMessage(channel=channel.id,
-                                         text=f"<{user_id}> :perkele: {profanity}")
+                                         text=f"<@{user_id}> :perkele: {profanity}")
             self.__update_perkele_count(user_id, channel.id)
 
     def __update_perkele_count(self, user_id, channel_id):
