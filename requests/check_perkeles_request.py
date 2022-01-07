@@ -22,7 +22,7 @@ class CheckPerkelesRequest(Request):
             profanity = get_profanity(self.session)
             user_id = last_notification.user_id
             self.client.chat_postMessage(channel=channel.id,
-                                         text=("<@%s> :perkele: %s" % (user_id, profanity)))
+                                         text=f"<{user_id}> :perkele: {profanity}")
             self.__update_perkele_count(user_id, channel.id)
 
     def __update_perkele_count(self, user_id, channel_id):
@@ -53,6 +53,6 @@ def get_profanity(session):
     random_limit = max(len(profanities), 20)
     index = random.randint(0, random_limit-1)
     if index >= len(profanities):
-        return ""
+        return "Perkele"
     return profanities[index]
 
