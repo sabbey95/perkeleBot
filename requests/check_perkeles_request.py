@@ -50,7 +50,7 @@ def deserves_perkele(last_notification, channel):
 
 def get_profanity(session):
     profanities = list(map(lambda x: x.profanity, session.query(Profanity).all()))
-    random_limit = max(len(profanities), 20)
+    random_limit = max(len(profanities), 5)
     index = random.randint(0, random_limit-1)
     if index >= len(profanities):
         return "Perkele"
