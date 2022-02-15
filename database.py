@@ -39,6 +39,14 @@ class PerkeleCount(Base):
     user_id = Column(String)
     perkele_count = Column(Integer)
 
+class Perkele(Base):
+    __tablename__ = 'perkeles'
+
+    id = Column(String, primary_key=True)
+    channel_id = Column(String)
+    user_id = Column(String)
+    timestamp = Column(DateTime)
+
 
 class Profanity(Base):
     __tablename__ = 'profanities'

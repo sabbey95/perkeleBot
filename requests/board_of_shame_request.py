@@ -1,6 +1,9 @@
+import datetime
+from itertools import groupby
+
 from flask import Response
 
-from database import PerkeleCount
+from database import PerkeleCount, Perkele
 from manual_config import SHAME_BOARD_TITLE
 from requests.slash_command_request import SlashCommandRequest
 
@@ -10,19 +13,39 @@ COLUMN_END_PADDING = 4
 
 class BoardOfShameRequest(SlashCommandRequest):
     def handle_channel(self, channel):
-        send_board_of_shame(self.client, channel.id, self.session)
+        text = self.data.get('text')
+        all_time = text.__contains__('all_time')
+        old_way = text.__contains__('old_way')
+        send_board_of_shame(self.client, channel.id, self.session, all_time, old_way)
         return Response(), 200
 
 
-def send_board_of_shame(client, channel_id, session):
-    perkele_counts = session.query(PerkeleCount).filter(PerkeleCount.channel_id == channel_id).all()
+def send_board_of_shame(client, channel_id, session, all_time=True, old_way=True):
+    perkele_counts = get_perkele_counts(channel_id, session, all_time, old_way)
     perkele_counts.sort(key=lambda x: x.perkele_count, reverse=True)
     users_list = client.users_list().get("members")
-    board_of_shame = build_board_of_shame(perkele_counts, users_list)
+    board_of_shame = build_board_of_shame(perkele_counts, users_list, all_time)
     client.chat_postMessage(channel=channel_id, text=board_of_shame)
 
 
-def build_board_of_shame(perkele_counts, users_list):
+def get_perkele_counts(channel_id, session, all_time, old_way):
+    if old_way:
+        return session.query(PerkeleCount).filter(PerkeleCount.channel_id == channel_id).all()
+
+    perkeles = session.query(Perkele).filter(PerkeleCount.channel_id == channel_id).all()
+    if not all_time:
+        current_date = datetime.datetime.now()
+        perkeles = [p for p in perkeles if (current_date - p.timestamp).days <= 7]
+    return [make_perkele_count(group) for key, group in groupby(perkeles, lambda p: p.user_id)]
+
+
+def make_perkele_count(perkeles):
+    first_perkele = perkeles[0]
+    return PerkeleCount(id=first_perkele.id, channel_id=first_perkele.channel_id, user_id=first_perkele.user_id,
+                        perkele_count=len(group))
+
+
+def build_board_of_shame(perkele_counts, users_list, all_time):
     heading_1 = "Offender"
     heading_2 = "Offences"
 
@@ -32,12 +55,17 @@ def build_board_of_shame(perkele_counts, users_list):
     divider = "-" * full_column_width
     bold_divider = "=" * full_column_width
     heading_section = "```%s\n%s\n%s\n%s\n" % (
-        pad(SHAME_BOARD_TITLE, full_column_width), divider, header_row, bold_divider)
+        pad(get_title(all_time), full_column_width), divider, header_row, bold_divider)
     middle_sections = map(lambda x: build_shame_row(x, users_list, column_1_width),
                           perkele_counts)
     table_section = '\n'.join(middle_sections)
     footer_section = "\n%s```" % divider
     return heading_section + table_section + footer_section
+
+
+def get_title(all_time):
+    timing_desc = 'All-time' if all_time else 'Weekly'
+    return f'{timing_desc} {SHAME_BOARD_TITLE}'
 
 
 def build_shame_row(perkele_count, users_list, column_1_width):
