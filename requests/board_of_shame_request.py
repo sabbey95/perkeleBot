@@ -14,7 +14,7 @@ COLUMN_END_PADDING = 4
 class BoardOfShameRequest(SlashCommandRequest):
     def handle_channel(self, channel):
         text = self.data.get('text')
-        all_time = text.__contains__('all_time')
+        all_time = not text.__contains__('weekly')
         old_way = not text.__contains__('new_way')
         send_board_of_shame(self.client, channel.id, self.session, all_time, old_way)
         return Response(), 200
