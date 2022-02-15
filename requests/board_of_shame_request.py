@@ -36,13 +36,13 @@ def get_perkele_counts(channel_id, session, all_time, old_way):
     if not all_time:
         current_date = datetime.datetime.now()
         perkeles = [p for p in perkeles if (current_date - p.timestamp).days <= 7]
-    return [make_perkele_count(group) for key, group in groupby(perkeles, lambda p: p.user_id)]
+    return [make_perkele_count(list(group)) for key, group in groupby(perkeles, lambda p: p.user_id)]
 
 
 def make_perkele_count(perkeles):
     first_perkele = perkeles[0]
     return PerkeleCount(id=first_perkele.id, channel_id=first_perkele.channel_id, user_id=first_perkele.user_id,
-                        perkele_count=len(list(group)))
+                        perkele_count=len(perkeles))
 
 
 def build_board_of_shame(perkele_counts, users_list, all_time):
