@@ -26,7 +26,7 @@ class CheckPerkelesRequest(Request):
             self.client.chat_postMessage(channel=channel.id,
                                          text=f"<@{user_id}> :perkele:  {profanity}")
             self.__update_perkele_count(user_id, channel.id)
-            self.__add_perkele(user_id, channel.id)
+            # self.__add_perkele(user_id, channel.id)
 
     def __update_perkele_count(self, user_id, channel_id):
         filter = self.session.query(PerkeleCount).filter(PerkeleCount.user_id == user_id,
