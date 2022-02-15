@@ -42,7 +42,7 @@ def get_perkele_counts(channel_id, session, all_time, old_way):
 def make_perkele_count(perkeles):
     first_perkele = perkeles[0]
     return PerkeleCount(id=first_perkele.id, channel_id=first_perkele.channel_id, user_id=first_perkele.user_id,
-                        perkele_count=len(group))
+                        perkele_count=len(list(group)))
 
 
 def build_board_of_shame(perkele_counts, users_list, all_time):
