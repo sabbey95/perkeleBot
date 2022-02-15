@@ -32,7 +32,7 @@ def get_perkele_counts(channel_id, session, all_time, old_way):
     if old_way:
         return session.query(PerkeleCount).filter(PerkeleCount.channel_id == channel_id).all()
 
-    perkeles = session.query(Perkele).filter(PerkeleCount.channel_id == channel_id).all()
+    perkeles = session.query(Perkele).filter(Perkele.channel_id == channel_id).all()
     if not all_time:
         current_date = datetime.datetime.now()
         perkeles = [p for p in perkeles if (current_date - p.timestamp).days <= 7]
