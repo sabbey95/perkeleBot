@@ -25,19 +25,7 @@ class CheckPerkelesRequest(Request):
             user_id = last_notification.user_id
             self.client.chat_postMessage(channel=channel.id,
                                          text=f"<@{user_id}> :perkele:  {profanity}")
-            self.__update_perkele_count(user_id, channel.id)
-            # self.__add_perkele(user_id, channel.id)
-
-    def __update_perkele_count(self, user_id, channel_id):
-        filter = self.session.query(PerkeleCount).filter(PerkeleCount.user_id == user_id,
-                                                         PerkeleCount.channel_id == channel_id)
-        current_perkele_count = filter.first()
-        if current_perkele_count is None:
-            new_perkele_count = PerkeleCount(id=(channel_id + user_id), user_id=user_id, channel_id=channel_id,
-                                             perkele_count=1)
-            self.session.add(new_perkele_count)
-        else:
-            filter.update({'perkele_count': current_perkele_count.perkele_count + 1})
+            self.__add_perkele(user_id, channel.id)
 
     def __add_perkele(self, user_id, channel_id):
         new_perkele = Perkele(id=uuid.uuid4(), user_id=user_id, channel_id=channel_id,

@@ -13,15 +13,12 @@ COLUMN_END_PADDING = 4
 
 class BoardOfShameRequest(SlashCommandRequest):
     def handle_channel(self, channel):
-        text = self.data.get('text')
-        all_time = not text.__contains__('weekly')
-        old_way = not text.__contains__('new_way')
-        send_board_of_shame(self.client, channel.id, self.session, all_time, old_way)
+        send_board_of_shame(self.client, channel.id, self.session)
         return Response(), 200
 
 
-def send_board_of_shame(client, channel_id, session, all_time=True, old_way=True):
-    perkele_counts = get_perkele_counts(channel_id, session, all_time, old_way)
+def send_board_of_shame(client, channel_id, session, all_time=True):
+    perkele_counts = get_perkele_counts(channel_id, session, all_time)
     perkele_counts.sort(key=lambda x: x.perkele_count, reverse=True)
     users_list = client.users_list().get("members")
     board_of_shame = build_board_of_shame(perkele_counts, users_list, all_time)
@@ -29,9 +26,6 @@ def send_board_of_shame(client, channel_id, session, all_time=True, old_way=True
 
 
 def get_perkele_counts(channel_id, session, all_time, old_way):
-    if old_way:
-        return session.query(PerkeleCount).filter(PerkeleCount.channel_id == channel_id).all()
-
     perkeles = session.query(Perkele).filter(Perkele.channel_id == channel_id).all()
     if not all_time:
         current_date = datetime.datetime.now()
