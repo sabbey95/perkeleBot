@@ -25,7 +25,7 @@ def send_board_of_shame(client, channel_id, session, all_time=True):
     client.chat_postMessage(channel=channel_id, text=board_of_shame)
 
 
-def get_perkele_counts(channel_id, session, all_time, old_way):
+def get_perkele_counts(channel_id, session, all_time):
     perkeles = session.query(Perkele).filter(Perkele.channel_id == channel_id).all()
     if not all_time:
         current_date = datetime.datetime.now()
