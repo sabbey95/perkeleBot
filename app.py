@@ -1,15 +1,13 @@
 import os
 
-from passlib.hash import sha256_crypt
 from dotenv import load_dotenv
 from flask import Flask, render_template
+from flask import request
+from passlib.hash import sha256_crypt
 from slackeventsapi import SlackEventAdapter
 
 import database as initialise_database
-from flask import request
-
 from auth import ENCRYPTED_MASTER_PASSWORD
-from database_utils import get_database_session
 from requests.add_profanity_request import AddProfanityRequest
 from requests.board_of_shame_request import BoardOfShameRequest
 from requests.check_perkeles_request import CheckPerkelesRequest
@@ -27,12 +25,6 @@ initialise_database
 
 app = Flask(__name__)
 slack_event_adapter = SlackEventAdapter(os.environ['SIGNING_SECRET'], '/slack/events', app)
-
-session = get_database_session()
-session.begin()
-session.query(initialise_database.Perkele).delete()
-session.commit()
-session.close()
 
 @slack_event_adapter.on('message')
 def message(payload):
