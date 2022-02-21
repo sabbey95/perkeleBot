@@ -28,8 +28,11 @@ initialise_database
 app = Flask(__name__)
 slack_event_adapter = SlackEventAdapter(os.environ['SIGNING_SECRET'], '/slack/events', app)
 
-get_database_session().query(initialise_database.Perkele).delete()
-
+session = get_database_session()
+session.begin()
+session.query(initialise_database.Perkele).delete()
+session.commit()
+session.close()
 
 @slack_event_adapter.on('message')
 def message(payload):
