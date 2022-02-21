@@ -18,6 +18,7 @@ from requests.replace_notification_request import ReplaceTurnNotification
 from requests.send_all_shame_boards_request import SendAllShameBoardsRequest
 from requests.set_perkele_hours_request import SetPerkeleHoursRequest
 from requests.toggle_perkele_pause import TogglePerkelePauseRequest
+from requests.whose_turn_request import WhoseTurn
 
 load_dotenv()
 
@@ -81,6 +82,13 @@ def replace_turn_notification():
         return "Who do you think you are?", 200
     name = request.args.get('name')
     return ReplaceTurnNotification(name).handle()
+
+
+
+@app.route('/whose-turn', methods=['GET'])
+def whose_turn():
+    return WhoseTurn().handle()
+
 
 
 @app.route('/add-profanity', methods=['POST'])
