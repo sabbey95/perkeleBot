@@ -28,7 +28,7 @@ initialise_database
 app = Flask(__name__)
 slack_event_adapter = SlackEventAdapter(os.environ['SIGNING_SECRET'], '/slack/events', app)
 
-get_database_session().query(initialise_database.Perkele).all().delete()
+get_database_session().query(initialise_database.Perkele).delete()
 
 
 @slack_event_adapter.on('message')
