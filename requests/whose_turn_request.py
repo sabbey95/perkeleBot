@@ -19,7 +19,6 @@ def make_turn_desc(turn, client):
 
 def get_channel_name(channel_id, client):
     channel = client.conversations_info(channel=channel_id)
-    print(channel)
     if channel is not None:
         return channel.get('channel').get('name')
     else:
