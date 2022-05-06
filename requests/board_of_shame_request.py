@@ -1,7 +1,8 @@
 import datetime
+from functools import reduce
 from itertools import groupby
 
-from flask import Response, jsonify
+from flask import Response
 
 from database import PerkeleCount, Perkele
 from manual_config import SHAME_BOARD_TITLE
@@ -13,8 +14,8 @@ COLUMN_END_PADDING = 4
 
 class BoardOfShameRequest(SlashCommandRequest):
     def handle_channel(self, channel):
-        board = send_board_of_shame(self.client, channel.id, self.session)
-        return jsonify(board), 200
+        send_board_of_shame(self.client, channel.id, self.session)
+        return Response(), 200
 
 
 def send_board_of_shame(client, channel_id, session, all_time=True):
@@ -22,8 +23,8 @@ def send_board_of_shame(client, channel_id, session, all_time=True):
     perkele_counts.sort(key=lambda x: x.perkele_count, reverse=True)
     users_list = client.users_list().get("members")
     board_of_shame = build_board_of_shame(perkele_counts, users_list, all_time)
-    # client.chat_postMessage(channel=channel_id, text=board_of_shame)
-    return board_of_shame
+    client.chat_postMessage(channel=channel_id, text=board_of_shame)
+
 
 def get_perkele_counts(channel_id, session, all_time):
     perkeles = session.query(Perkele).filter(Perkele.channel_id == channel_id).all()
@@ -34,13 +35,17 @@ def get_perkele_counts(channel_id, session, all_time):
 
 
 def group_perkeles(perkeles):
-    return [make_perkele_count(list(group)) for key, group in groupby(perkeles, lambda p: p.user_id)]
+    return [make_perkele_count(key, group) for key, group in reduce(merge_dictionaries, perkeles, {}).items()]
 
 
-def make_perkele_count(perkeles):
-    first_perkele = perkeles[0]
-    return PerkeleCount(id=first_perkele.id, channel_id=first_perkele.channel_id, user_id=first_perkele.user_id,
-                        perkele_count=len(perkeles))
+def merge_dictionaries(acc, item):
+    acc[item.user_id] = acc.get(item.user_id, 0) + 1
+    return acc
+
+
+def make_perkele_count(user_id, count):
+    return PerkeleCount(id=user_id, channel_id=user_id, user_id=user_id,
+                        perkele_count=count)
 
 
 def build_board_of_shame(perkele_counts, users_list, all_time):
