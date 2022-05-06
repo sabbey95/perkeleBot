@@ -1,7 +1,7 @@
 import datetime
 from itertools import groupby
 
-from flask import Response
+from flask import Response, jsonify
 
 from database import PerkeleCount, Perkele
 from manual_config import SHAME_BOARD_TITLE
@@ -13,8 +13,8 @@ COLUMN_END_PADDING = 4
 
 class BoardOfShameRequest(SlashCommandRequest):
     def handle_channel(self, channel):
-        send_board_of_shame(self.client, channel.id, self.session)
-        return Response(), 200
+        board = send_board_of_shame(self.client, channel.id, self.session)
+        return jsonify(board), 200
 
 
 def send_board_of_shame(client, channel_id, session, all_time=True):
@@ -22,14 +22,18 @@ def send_board_of_shame(client, channel_id, session, all_time=True):
     perkele_counts.sort(key=lambda x: x.perkele_count, reverse=True)
     users_list = client.users_list().get("members")
     board_of_shame = build_board_of_shame(perkele_counts, users_list, all_time)
-    client.chat_postMessage(channel=channel_id, text=board_of_shame)
-
+    # client.chat_postMessage(channel=channel_id, text=board_of_shame)
+    return board_of_shame
 
 def get_perkele_counts(channel_id, session, all_time):
     perkeles = session.query(Perkele).filter(Perkele.channel_id == channel_id).all()
     if not all_time:
         current_date = datetime.datetime.now()
         perkeles = [p for p in perkeles if (current_date - p.timestamp).days <= 7]
+    return group_perkeles(perkeles)
+
+
+def group_perkeles(perkeles):
     return [make_perkele_count(list(group)) for key, group in groupby(perkeles, lambda p: p.user_id)]
 
 
