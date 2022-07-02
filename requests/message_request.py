@@ -24,7 +24,5 @@ class MessageRequest(ChannelRequest):
             self.replace_current_notification(channel, mentions)
 
     def replace_current_notification(self, channel, mentions):
-        turn_notification = TurnNotification(channel_id=channel.id,
-                                             user_id=mentions[0], timestamp=datetime.datetime.now())
-        self.session.query(TurnNotification).filter(TurnNotification.channel_id == channel.id).delete()
-        self.session.add(turn_notification)
+        self.session.query(TurnNotification).filter(TurnNotification.channel_id == channel.id).update(
+                {'user_id': mentions[0], 'timestamp': datetime.datetime.now()})
