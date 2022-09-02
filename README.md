@@ -30,3 +30,8 @@ path_to_ngrok/ngrok http 5000
 ``` 
 
 Use the url this creates on the slack api website when setting up the bot.
+
+## Deploy
+
+The python web app runs on render.com
+The perkele checks are automated using a cron job on cron-job.org
