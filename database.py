@@ -5,7 +5,8 @@ import os
 
 load_dotenv()
 url = os.environ["DATABASE_URL"]
-engine = create_engine(url.replace("postgres://", "postgresql://", 1), echo=False)
+engine = create_engine(url.replace("postgres://", "postgresql://", 1), echo=False,
+                       pool_pre_ping=True)
 
 
 def get_database_engine():
@@ -38,6 +39,7 @@ class PerkeleCount(Base):
     channel_id = Column(String)
     user_id = Column(String)
     perkele_count = Column(Integer)
+
 
 class Perkele(Base):
     __tablename__ = 'perkeles'
